@@ -88,6 +88,7 @@ export default async function DashboardPage() {
           </h2>
         </div>
         <div className="p-6">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <InvoiceTable invoices={serializedInvoices as any} currency={currency} />
         </div>
       </div>

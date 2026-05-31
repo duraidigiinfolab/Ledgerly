@@ -121,12 +121,12 @@ export function InvoiceTable({ invoices: initialInvoices, currency }: InvoiceTab
     }
   };
 
-  const SortButton = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
+  const renderSortButton = (field: SortField, label: string) => (
     <button
       onClick={() => handleSort(field)}
       className="flex items-center gap-1 text-xs font-semibold text-slate-400 uppercase tracking-wider hover:text-slate-600 transition-colors"
     >
-      {children}
+      {label}
       <ArrowUpDown className="h-3 w-3" />
     </button>
   );
@@ -157,19 +157,19 @@ export function InvoiceTable({ invoices: initialInvoices, currency }: InvoiceTab
         <thead>
           <tr className="border-b border-slate-200 bg-slate-50/80">
             <th className="px-4 py-3 text-left">
-              <SortButton field="invoiceNumber">Invoice #</SortButton>
+              {renderSortButton("invoiceNumber", "Invoice")}
             </th>
             <th className="px-4 py-3 text-left">
-              <SortButton field="clientName">Client</SortButton>
+              {renderSortButton("clientName", "Client")}
             </th>
             <th className="px-4 py-3 text-left hidden sm:table-cell">
-              <SortButton field="issueDate">Date</SortButton>
+              {renderSortButton("issueDate", "Date")}
             </th>
             <th className="px-4 py-3 text-right">
-              <SortButton field="total">Total</SortButton>
+              {renderSortButton("total", "Total")}
             </th>
             <th className="px-4 py-3 text-center">
-              <SortButton field="status">Status</SortButton>
+              {renderSortButton("status", "Status")}
             </th>
             <th className="px-4 py-3 text-right w-12"></th>
           </tr>

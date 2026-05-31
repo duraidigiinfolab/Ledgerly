@@ -55,9 +55,6 @@ export default function ClientsPage() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
-  useEffect(() => {
-    fetchClients();
-  }, []);
 
   const fetchClients = async () => {
     try {
@@ -70,6 +67,11 @@ export default function ClientsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    fetchClients();
+  }, []);
 
   const openDialog = (client?: Client) => {
     if (client) {

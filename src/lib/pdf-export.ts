@@ -15,5 +15,6 @@ export async function exportToPdf(element: HTMLElement, filename: string) {
       orientation: "portrait" as const,
     },
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return html2pdf().set(options as any).from(element).save();
 }

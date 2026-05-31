@@ -75,7 +75,7 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
   const [issueDate, setIssueDate] = useState(
     initialData?.issueDate || new Date().toISOString().split("T")[0]
   );
-  const [dueDate, setDueDate] = useState(
+  const [dueDate, setDueDate] = useState(() =>
     initialData?.dueDate ||
       new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
   );

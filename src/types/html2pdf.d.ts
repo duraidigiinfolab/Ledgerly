@@ -16,11 +16,12 @@ declare module "html2pdf.js" {
   }
 
   interface Html2PdfInstance {
-    set(options: Html2PdfOptions): Html2PdfInstance;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    set(options: any): Html2PdfInstance;
     from(element: HTMLElement): Html2PdfInstance;
     save(): Promise<void>;
     toPdf(): Html2PdfInstance;
-    output(type: string): Promise<any>;
+    output(type: string): Promise<unknown>;
   }
 
   function html2pdf(): Html2PdfInstance;
