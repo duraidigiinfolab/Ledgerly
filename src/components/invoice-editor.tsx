@@ -199,7 +199,7 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
       await exportToPdf(previewRef.current, invoiceNumber || "invoice");
     } catch (error) {
       console.error("PDF export error:", error);
-      alert("Failed to export PDF");
+      alert(`Failed to export PDF: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setExporting(false);
     }
