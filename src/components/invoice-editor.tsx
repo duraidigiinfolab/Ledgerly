@@ -125,11 +125,7 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
       fetch("/api/invoices/next-number")
         .then((r) => r.json())
         .then((data) => {
-          const number = generateInvoiceNumber(
-            data.businessName || "INV",
-            data.nextNumber - 1
-          );
-          setInvoiceNumber(number);
+          setInvoiceNumber(data.nextNumber);
         })
         .catch(console.error);
     }
