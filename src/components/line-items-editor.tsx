@@ -49,12 +49,12 @@ export function LineItemsEditor({
   return (
     <div className="space-y-3">
       {/* Header */}
-      <div className="hidden sm:grid sm:grid-cols-[1fr_80px_100px_100px_40px] gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider px-1">
-        <span>Description</span>
-        <span className="text-right">Qty</span>
-        <span className="text-right">Rate</span>
-        <span className="text-right">Amount</span>
-        <span></span>
+      <div className="hidden sm:grid sm:grid-cols-[1fr_80px_100px_100px_40px] gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider px-2 pb-2">
+        <div className="pl-3">Description</div>
+        <div className="text-right pr-3">Qty</div>
+        <div className="text-right pr-3">Rate</div>
+        <div className="text-right pr-3">Amount</div>
+        <div></div>
       </div>
 
       {/* Items */}
