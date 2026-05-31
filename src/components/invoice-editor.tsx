@@ -199,7 +199,8 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
       await exportToPdf(previewRef.current, invoiceNumber || "invoice");
     } catch (error) {
       console.error("PDF export error:", error);
-      alert(`Failed to export PDF: ${error instanceof Error ? error.message : String(error)}`);
+      // Fallback to native browser print (Save as PDF)
+      window.print();
     } finally {
       setExporting(false);
     }
@@ -372,8 +373,8 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
 
       {/* Right Column - Live Preview */}
       <div className="lg:w-1/2 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
-        <div className="bg-slate-100 rounded-xl p-6 min-h-[600px]">
-          <div className="flex items-center justify-between mb-4">
+        <div id="invoice-preview-container" className="bg-slate-100 rounded-xl p-6 min-h-[600px]">
+          <div className="flex items-center justify-between mb-4 print:hidden">
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
               Live Preview
             </h2>

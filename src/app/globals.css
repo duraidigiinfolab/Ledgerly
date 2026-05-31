@@ -77,3 +77,26 @@
     transform: translateX(0);
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #invoice-preview-container, #invoice-preview-container * {
+    visibility: visible;
+  }
+  #invoice-preview-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+  }
+  
+  /* Hide sidebar and other UI elements when printing */
+  aside, button, header {
+    display: none !important;
+  }
+}
