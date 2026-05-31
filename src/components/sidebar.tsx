@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   MessageSquare,
+  Inbox,
   ChevronLeft,
   ChevronRight,
   Receipt,
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/invoices/new", label: "New Invoice", icon: FileText },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/feedback", label: "User Feedback", icon: Inbox },
 ];
 
 export function Sidebar() {
