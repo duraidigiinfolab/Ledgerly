@@ -2,9 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, PackagePlus } from "lucide-react";
 import { formatCurrency, safeNumber } from "@/lib/utils";
 import type { LineItem } from "@/components/invoice-editor";
+import { useState, useEffect } from "react";
+
+interface PresavedItem {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  unit: string | null;
+}
 
 interface LineItemsEditorProps {
   items: LineItem[];
@@ -17,6 +26,15 @@ export function LineItemsEditor({
   onChange,
   currency,
 }: LineItemsEditorProps) {
+  const [presavedItems, setPresavedItems] = useState<PresavedItem[]>([]);
+
+  useEffect(() => {
+    fetch("/api/items")
+      .then((res) => res.json())
+      .then((data) => setPresavedItems(data))
+      .catch(console.error);
+  }, []);
+
   const updateItem = (id: string, field: keyof LineItem, value: string | number) => {
     onChange(
       items.map((item) => {
@@ -37,6 +55,22 @@ export function LineItemsEditor({
         quantity: 1,
         rate: 0,
         amount: 0,
+      },
+    ]);
+  };
+
+  const addPresavedItem = (itemId: string) => {
+    if (!itemId) return;
+    const preset = presavedItems.find((i) => i.id === itemId);
+    if (!preset) return;
+    onChange([
+      ...items,
+      {
+        id: crypto.randomUUID(),
+        description: preset.name + (preset.description ? ` - ${preset.description}` : ""),
+        quantity: 1,
+        rate: preset.price,
+        amount: preset.price,
       },
     ]);
   };
@@ -132,14 +166,38 @@ export function LineItemsEditor({
       ))}
 
       {/* Add Item */}
-      <Button
-        variant="outline"
-        onClick={addItem}
-        className="w-full border-dashed border-2 text-slate-500 hover:text-indigo-600 hover:border-indigo-300"
-      >
-        <Plus className="h-4 w-4 mr-2" />
-        Add Line Item
-      </Button>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Button
+          variant="outline"
+          onClick={addItem}
+          className="flex-1 border-dashed border-2 text-slate-500 hover:text-indigo-600 hover:border-indigo-300"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Add Custom Line Item
+        </Button>
+        {presavedItems.length > 0 && (
+          <div className="flex-1 relative">
+            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+              <PackagePlus className="h-4 w-4 text-indigo-500" />
+            </div>
+            <select
+              className="w-full h-10 pl-10 pr-4 rounded-md border border-slate-200 bg-white text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 hover:border-indigo-300 cursor-pointer transition-colors"
+              onChange={(e) => {
+                addPresavedItem(e.target.value);
+                e.target.value = ""; // reset
+              }}
+              defaultValue=""
+            >
+              <option value="" disabled>Insert pre-saved item...</option>
+              {presavedItems.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name} ({formatCurrency(item.price, currency)})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

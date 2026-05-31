@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import {
@@ -13,7 +14,7 @@ import {
   Inbox,
   ChevronLeft,
   ChevronRight,
-  Receipt,
+  Package,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,9 +24,9 @@ import { FeedbackDialog } from "@/components/feedback-dialog";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/invoices/new", label: "New Invoice", icon: FileText },
+  { href: "/items", label: "Items & Services", icon: Package },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/settings", label: "Settings", icon: Settings },
-  { href: "/feedback", label: "User Feedback", icon: Inbox },
 ];
 
 export function Sidebar() {
@@ -44,8 +45,8 @@ export function Sidebar() {
       >
         {/* Logo */}
         <div className="flex h-16 items-center gap-2 border-b border-slate-200 px-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 shadow-md">
-            <Receipt className="h-5 w-5 text-white" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 shadow-md p-1">
+            <Image src="/invoice.png" alt="Ledgerly" width={24} height={24} className="object-contain" />
           </div>
           {!collapsed && (
             <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -81,6 +82,20 @@ export function Sidebar() {
               </Link>
             );
           })}
+          {session?.user?.email === "duraidigiinfolab@gmail.com" && (
+            <Link
+              href="/admin"
+              className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                pathname.startsWith("/admin")
+                  ? "bg-indigo-50 text-indigo-700 shadow-sm"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+              )}
+            >
+              <Inbox className={cn("h-5 w-5 shrink-0", pathname.startsWith("/admin") ? "text-indigo-600" : "text-slate-400")} />
+              {!collapsed && <span>Admin Dashboard</span>}
+            </Link>
+          )}
         </nav>
 
         {/* Bottom section */}
