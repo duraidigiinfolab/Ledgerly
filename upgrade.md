@@ -11,3 +11,4 @@ create sales report page where user can see all the invoices and their details a
 
 add google adds for income
 
+admin can view user and clint details

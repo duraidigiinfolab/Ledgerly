@@ -11,9 +11,9 @@ import { Separator } from "@/components/ui/separator";
 import { ClientSelector } from "@/components/client-selector";
 import { LineItemsEditor } from "@/components/line-items-editor";
 import { InvoicePreview } from "@/components/invoice-preview";
-import { exportToPdf } from "@/lib/pdf-export";
-import { generateInvoiceNumber, safeNumber } from "@/lib/utils";
+import { safeNumber } from "@/lib/utils";
 import { Save, Download, Send, Loader2 } from "lucide-react";
+import { useReactToPrint } from "react-to-print";
 
 export interface LineItem {
   id: string;
@@ -192,18 +192,13 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
     }
   };
 
-  const handleExportPdf = async () => {
-    if (!previewRef.current) return;
-    setExporting(true);
-    try {
-      await exportToPdf(previewRef.current, invoiceNumber || "invoice");
-    } catch (error) {
-      console.error("PDF export error:", error);
-      // Fallback to native browser print (Save as PDF)
-      window.print();
-    } finally {
-      setExporting(false);
-    }
+  const handlePrint = useReactToPrint({
+    contentRef: previewRef,
+    documentTitle: invoiceNumber || "invoice",
+  });
+
+  const handleExportPdf = () => {
+    handlePrint();
   };
 
   const currency = userProfile?.currency || "USD";
