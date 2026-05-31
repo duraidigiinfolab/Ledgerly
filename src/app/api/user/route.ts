@@ -12,6 +12,7 @@ const updateUserSchema = z.object({
   taxId: z.string().optional(),
   currency: z.string().optional(),
   logoUrl: z.string().optional(),
+  invoiceFooter: z.string().optional(),
 });
 
 export async function GET() {

@@ -18,6 +18,7 @@ interface InvoicePreviewProps {
   total: number;
   notes: string;
   currency: string;
+  invoiceFooter?: string | null;
 }
 
 export const InvoicePreview = forwardRef<HTMLDivElement, InvoicePreviewProps>(
@@ -36,6 +37,7 @@ export const InvoicePreview = forwardRef<HTMLDivElement, InvoicePreviewProps>(
       total,
       notes,
       currency,
+      invoiceFooter,
     },
     ref
   ) => {
@@ -247,9 +249,15 @@ export const InvoicePreview = forwardRef<HTMLDivElement, InvoicePreviewProps>(
 
         {/* Footer */}
         <div className="mt-12 pt-6 border-t border-slate-200 text-center">
-          <p className="text-xs text-slate-400">
-            Thank you for your business!
-          </p>
+          {invoiceFooter ? (
+            <p className="text-xs text-slate-500 whitespace-pre-line">
+              {invoiceFooter}
+            </p>
+          ) : (
+            <p className="text-xs text-slate-400">
+              Thank you for your business!
+            </p>
+          )}
         </div>
       </div>
     );

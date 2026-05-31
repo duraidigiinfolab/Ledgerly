@@ -49,7 +49,7 @@ export function LineItemsEditor({
   return (
     <div className="space-y-3">
       {/* Header */}
-      <div className="hidden sm:grid sm:grid-cols-[1fr_80px_100px_100px_40px] gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider px-2 pb-2">
+      <div className="hidden sm:grid sm:grid-cols-[minmax(150px,1fr)_80px_100px_120px_40px] gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider px-2 pb-2">
         <div className="pl-3">Description</div>
         <div className="text-right pr-3">Qty</div>
         <div className="text-right pr-3">Rate</div>
@@ -61,7 +61,7 @@ export function LineItemsEditor({
       {items.map((item, index) => (
         <div
           key={item.id}
-          className="group grid grid-cols-1 sm:grid-cols-[1fr_80px_100px_100px_40px] gap-2 items-center rounded-lg border border-slate-200 p-3 sm:p-2 sm:border-transparent sm:hover:border-slate-200 transition-all duration-200"
+          className="group grid grid-cols-1 sm:grid-cols-[minmax(150px,1fr)_80px_100px_120px_40px] gap-2 items-center rounded-lg border border-slate-200 p-3 sm:p-2 sm:border-transparent sm:hover:border-slate-200 transition-all duration-200"
         >
           <div>
             <label className="sm:hidden text-xs text-slate-400 mb-1 block">

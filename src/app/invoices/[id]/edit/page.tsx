@@ -36,6 +36,7 @@ export default async function EditInvoicePage({
     notes: invoice.notes || "",
     taxRate: invoice.taxRate,
     discount: invoice.discount,
+    discountType: invoice.discountType,
     lineItems: invoice.lineItems.map((item) => ({
       id: item.id,
       description: item.description,

@@ -47,6 +47,7 @@ export default function SettingsPage() {
   const [taxId, setTaxId] = useState("");
   const [currency, setCurrency] = useState("USD");
   const [logoUrl, setLogoUrl] = useState("");
+  const [invoiceFooter, setInvoiceFooter] = useState("");
 
   useEffect(() => {
     fetch("/api/user")
@@ -60,6 +61,7 @@ export default function SettingsPage() {
         setTaxId(user.taxId || "");
         setCurrency(user.currency || "USD");
         setLogoUrl(user.logoUrl || "");
+        setInvoiceFooter(user.invoiceFooter || "");
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -98,6 +100,7 @@ export default function SettingsPage() {
           taxId,
           currency,
           logoUrl,
+          invoiceFooter,
         }),
       });
 
@@ -255,6 +258,17 @@ export default function SettingsPage() {
                   onChange={(e) => setBusinessAddress(e.target.value)}
                   className="mt-1.5"
                   rows={3}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <Label htmlFor="biz-footer">Invoice Footer</Label>
+                <Textarea
+                  id="biz-footer"
+                  placeholder="Thank you for your business! Payment is due within 30 days."
+                  value={invoiceFooter}
+                  onChange={(e) => setInvoiceFooter(e.target.value)}
+                  className="mt-1.5"
+                  rows={2}
                 />
               </div>
             </div>

@@ -19,11 +19,13 @@ model User {
   taxId           String?
   currency        String    @default("USD")
   logoUrl         String?
+  invoiceFooter   String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  clients  Client[]
-  invoices Invoice[]
+  clients   Client[]
+  invoices  Invoice[]
+  feedbacks Feedback[]
 }
 
 model Client {
@@ -51,6 +53,7 @@ model Invoice {
   notes         String?
   taxRate       Float         @default(0)
   discount      Float         @default(0)
+  discountType  DiscountType  @default(FLAT)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
@@ -61,6 +64,18 @@ model Invoice {
   @@unique([userId, invoiceNumber])
   @@index([userId])
   @@index([clientId])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  message   String
+  rating    Int?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
 }
 
 model LineItem {
@@ -80,4 +95,9 @@ enum InvoiceStatus {
   DRAFT
   SENT
   PAID
+}
+
+enum DiscountType {
+  FLAT
+  PERCENTAGE
 }

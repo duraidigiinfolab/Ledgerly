@@ -19,6 +19,7 @@ const createInvoiceSchema = z.object({
   notes: z.string().optional(),
   taxRate: z.number().min(0).default(0),
   discount: z.number().min(0).default(0),
+  discountType: z.enum(["FLAT", "PERCENTAGE"]).default("FLAT"),
   lineItems: z.array(lineItemSchema).min(1, "At least one line item is required"),
 });
 
@@ -69,6 +70,7 @@ export async function POST(request: Request) {
         notes: validated.notes,
         taxRate: validated.taxRate,
         discount: validated.discount,
+        discountType: validated.discountType,
         lineItems: {
           create: validated.lineItems.map((item) => ({
             description: item.description,

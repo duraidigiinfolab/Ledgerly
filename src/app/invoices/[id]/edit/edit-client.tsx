@@ -16,6 +16,7 @@ interface EditInvoiceClientProps {
     notes: string;
     taxRate: number;
     discount: number;
+    discountType?: string;
     lineItems: {
       id: string;
       description: string;

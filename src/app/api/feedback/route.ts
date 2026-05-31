@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const feedbackSchema = z.object({
@@ -18,12 +19,13 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validated = feedbackSchema.parse(body);
 
-    // In production, you would save to DB or send to a service like Sentry/Intercom
-    console.log("Feedback received:", {
-      userId: session.user.id,
-      userEmail: session.user.email,
-      ...validated,
-      timestamp: new Date().toISOString(),
+    await prisma.feedback.create({
+      data: {
+        userId: session.user.id,
+        type: validated.type,
+        message: validated.message,
+        rating: validated.rating,
+      },
     });
 
     return NextResponse.json(

@@ -55,6 +55,7 @@ interface InvoiceEditorProps {
     notes: string;
     taxRate: number;
     discount: number;
+    discountType?: string;
     lineItems: LineItem[];
     client?: ClientData;
   };
@@ -85,6 +86,7 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
   );
   const [taxRate, setTaxRate] = useState(initialData?.taxRate || 0);
   const [discount, setDiscount] = useState(initialData?.discount || 0);
+  const [discountType, setDiscountType] = useState(initialData?.discountType || "FLAT");
   const [notes, setNotes] = useState(initialData?.notes || "");
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -95,7 +97,11 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
     0
   );
   const taxAmount = subtotal * (safeNumber(taxRate) / 100);
-  const total = subtotal + taxAmount - safeNumber(discount);
+  const discountAmount =
+    discountType === "PERCENTAGE"
+      ? subtotal * (safeNumber(discount) / 100)
+      : safeNumber(discount);
+  const total = subtotal + taxAmount - discountAmount;
 
   // Fetch user profile
   useEffect(() => {
@@ -155,6 +161,7 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
         notes,
         taxRate: safeNumber(taxRate),
         discount: safeNumber(discount),
+        discountType,
         lineItems: lineItems
           .filter((item) => item.description.trim())
           .map((item) => ({
@@ -289,16 +296,26 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
               />
             </div>
             <div>
-              <Label htmlFor="discount">Discount ($)</Label>
-              <Input
-                id="discount"
-                type="number"
-                step="0.01"
-                min="0"
-                value={discount}
-                onChange={(e) => setDiscount(safeNumber(e.target.value))}
-                className="mt-1.5"
-              />
+              <Label htmlFor="discount">Discount</Label>
+              <div className="flex gap-2 mt-1.5">
+                <Input
+                  id="discount"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={discount}
+                  onChange={(e) => setDiscount(safeNumber(e.target.value))}
+                  className="flex-1"
+                />
+                <select
+                  value={discountType}
+                  onChange={(e) => setDiscountType(e.target.value)}
+                  className="w-20 rounded-md border border-slate-200 bg-white px-2 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-900"
+                >
+                  <option value="FLAT">Amt</option>
+                  <option value="PERCENTAGE">%</option>
+                </select>
+              </div>
             </div>
           </div>
           <div className="mt-4">
@@ -377,7 +394,7 @@ export function InvoiceEditor({ invoiceId, initialData }: InvoiceEditorProps) {
             subtotal={subtotal}
             taxRate={taxRate}
             taxAmount={taxAmount}
-            discount={discount}
+            discount={discountAmount}
             total={total}
             notes={notes}
             currency={currency}

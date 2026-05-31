@@ -9,17 +9,21 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const count = await prisma.invoice.count({
-      where: { userId: session.user.id },
-    });
-
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: { businessName: true },
     });
 
+    const bName = user?.businessName || "INVO";
+    const prefix = bName.replace(/[^a-zA-Z0-9]/g, "").substring(0, 4).toUpperCase().padEnd(4, "X");
+    const date = new Date();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const random = Math.floor(10 + Math.random() * 90); // 2 digits
+    const nextNumber = `${prefix}${mm}${dd}${random}`;
+
     return NextResponse.json({
-      nextNumber: count + 1,
+      nextNumber,
       businessName: user?.businessName || "",
     });
   } catch (error) {
