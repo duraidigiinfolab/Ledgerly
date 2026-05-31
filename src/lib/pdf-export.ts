@@ -1,5 +1,6 @@
 export async function exportToPdf(element: HTMLElement, filename: string) {
-  const html2pdfModule = await import("html2pdf.js");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const html2pdfModule: any = await import("html2pdf.js");
   // Handle both ES module default export and CommonJS module patterns
   const html2pdf = html2pdfModule.default ? (typeof html2pdfModule.default === 'function' ? html2pdfModule.default : html2pdfModule.default.default) : html2pdfModule;
   
